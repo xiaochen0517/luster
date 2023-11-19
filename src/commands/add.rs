@@ -1,4 +1,4 @@
-use diesel::{select, sql_function, QueryableByName, RunQueryDsl};
+use diesel::{select, sql_function, RunQueryDsl};
 
 use crate::args::AddCommand;
 use crate::commands::CommandExecutor;
@@ -21,7 +21,6 @@ sql_function!(fn last_insert_rowid() -> Integer);
 
 impl CommandExecutor for AddCommandExecutor {
     fn execute(&self) -> Result<(), Error> {
-        println!("add_args: {:?}", self.add_args);
         if self.add_args.title.is_empty() {
             return Err(Error::new("Title cannot be empty".to_string()));
         }
@@ -41,14 +40,11 @@ impl CommandExecutor for AddCommandExecutor {
             .values(&todo_item)
             .execute(connection)
             .map_err(|e| Error::new(e.to_string()))?;
-
-        // 获取最后插入行的ID
-        // let connection = &mut db_util::establish_connection();
+        // get last inserted id
         let last_id: i32 = select(last_insert_rowid())
             .get_result(connection)
             .map_err(|e| Error::new(e.to_string()))?;
-
-        println!("Added todo item with id: {}", last_id);
+        println!("🎉Success: Added todo item with id: {}", last_id);
         Ok(())
     }
 }
