@@ -5,8 +5,8 @@ use config::Config;
 
 use crate::args::Command;
 use crate::commands::add::AddCommandExecutor;
-use crate::commands::CommandExecutor;
 use crate::commands::list::ListCommandExecutor;
+use crate::commands::CommandExecutor;
 
 mod args;
 mod commands;
@@ -25,6 +25,6 @@ pub fn run() {
     };
 
     if run_result.is_err() {
-        println!("Error: {}", run_result.unwrap_err());
+        println!("🚨Error: {}", run_result.unwrap_err());
     }
 }

@@ -18,8 +18,26 @@ pub(crate) enum Command {
 
 #[derive(Parser, Debug)]
 pub(crate) struct ListCommand {
-    #[arg(short, long, default_value = "false")]
-    all: bool,
+    #[arg(
+        short,
+        long,
+        default_value = "false",
+        help = "List all todos including completed todos"
+    )]
+    pub(crate) all: bool,
+    #[arg(
+        short,
+        long,
+        default_value = "10",
+        help = "Size of the one page of todos"
+    )]
+    pub(crate) size: i64,
+    #[arg(short, long, default_value = "0", help = "Page number of the todos")]
+    pub(crate) page: i64,
+    #[arg(short, long)]
+    pub(crate) title: Option<String>,
+    #[arg(short, long)]
+    pub(crate) description: Option<String>,
 }
 
 #[derive(Parser, Debug)]
