@@ -24,4 +24,4 @@ jobs:
         with:
           name: ${{ matrix.os }}
           path: |
-            target/release/luster.*
+            target/release/luster*
