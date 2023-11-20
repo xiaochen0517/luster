@@ -5,8 +5,8 @@ use crate::args::ListCommand;
 use crate::commands::CommandExecutor;
 use crate::models::error::Error;
 use crate::models::todo::TodoItem;
-use crate::schema::todo_table::{completed, description, title};
 use crate::schema::todo_table::dsl::todo_table;
+use crate::schema::todo_table::{completed, description, title};
 use crate::utils::db_util;
 
 pub(crate) struct ListCommandExecutor {
@@ -21,24 +21,23 @@ impl ListCommandExecutor {
 
 impl CommandExecutor for ListCommandExecutor {
     fn execute(&self) -> Result<(), Error> {
-        let mut todo_vec: Vec<TodoItem> = Vec::new();
+        let todo_vec: Vec<TodoItem>;
         let connection = &mut db_util::establish_connection();
         let mut select_statement = todo_table.into_boxed::<diesel::sqlite::Sqlite>();
         if !self.list_args.all {
             select_statement = select_statement.filter(completed.eq(false));
         }
         if self.list_args.title.is_some() && !self.list_args.title.as_ref().unwrap().is_empty() {
-            select_statement = select_statement.filter(
-                title.like(format!("%{}%", self.list_args.title.as_ref().unwrap())),
-            );
+            select_statement = select_statement
+                .filter(title.like(format!("%{}%", self.list_args.title.as_ref().unwrap())));
         }
         if self.list_args.description.is_some()
             && !self.list_args.description.as_ref().unwrap().is_empty()
         {
-            select_statement = select_statement.filter(
-                description.like(format!(
-                        "%{}%", self.list_args.description.as_ref().unwrap())),
-            );
+            select_statement = select_statement.filter(description.like(format!(
+                "%{}%",
+                self.list_args.description.as_ref().unwrap()
+            )));
         }
         todo_vec = select_statement
             .limit(self.list_args.size)

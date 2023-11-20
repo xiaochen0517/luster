@@ -14,3 +14,4 @@ serde_json = "1.0.108"
 diesel = { version = "2.1.4", features = ["sqlite", "chrono"] }
 dotenv = "0.15.0"
 prettytable-rs = "0.10.0"
+diesel_migrations = { version = "2.1.0", features = ["sqlite"] }

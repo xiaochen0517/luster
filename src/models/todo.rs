@@ -33,10 +33,8 @@ impl TodoItem {
     pub fn set_due_date(&mut self, due_date: Option<NaiveDate>) {
         self.due_date = due_date;
     }
+    #[allow(dead_code)]
     pub fn set_completed(&mut self, completed: bool) {
         self.completed = completed;
-    }
-    pub fn set_create_time(&mut self, create_time: NaiveDateTime) {
-        self.create_time = create_time;
     }
 }
