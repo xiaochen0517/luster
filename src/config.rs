@@ -1,7 +1,6 @@
 use std::env;
 
 use serde::{Deserialize, Serialize};
-use serde_json::json;
 
 use crate::utils::json_util::JSON;
 
@@ -30,13 +29,14 @@ impl Config {
         // read config
         let config_json = JSON::read_json(
             config_file_path.to_str().unwrap(),
-            &json!({"version": "0.1.0"}).to_string(),
+            &serde_json::to_string(&Self::new("0.1.0".to_string())).unwrap(),
         );
         // parse config
         let config: Config = serde_json::from_str(&config_json).unwrap();
         config
     }
 
+    #[allow(dead_code)]
     pub(crate) fn save_config(&self) {
         let exe_path = env::current_exe().unwrap();
         let mut config_file_path = exe_path.parent().unwrap().to_path_buf();
