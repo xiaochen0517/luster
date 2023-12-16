@@ -1,4 +1,4 @@
-use diesel::{select, sql_function, RunQueryDsl};
+use diesel::{RunQueryDsl, select, sql_function};
 
 use crate::args::AddCommand;
 use crate::commands::CommandExecutor;

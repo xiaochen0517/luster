@@ -6,7 +6,6 @@ use crate::commands::CommandExecutor;
 use crate::models::error::Error;
 use crate::models::todo::TodoItemWithId;
 use crate::schema::todo_table::{completed, description, title};
-use crate::models::todo::TodoItem;
 use crate::schema::todo_table::dsl::todo_table;
 use crate::utils::db_util;
 

@@ -1,7 +1,7 @@
 use std::env;
 
-use diesel::sqlite::SqliteConnection;
 use diesel::Connection;
+use diesel::sqlite::SqliteConnection;
 use dotenv::dotenv;
 
 pub fn establish_connection() -> SqliteConnection {

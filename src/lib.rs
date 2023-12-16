@@ -1,16 +1,16 @@
 use clap::Parser;
 use diesel::migration::MigrationConnection;
+use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 
 use args::Args;
 use config::Config;
 
 use crate::args::Command;
 use crate::commands::add::AddCommandExecutor;
-use crate::commands::list::ListCommandExecutor;
 use crate::commands::CommandExecutor;
+use crate::commands::done::DoneCommandExecutor;
+use crate::commands::list::ListCommandExecutor;
 use crate::utils::db_util;
-
-use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 
 mod args;
 mod commands;
