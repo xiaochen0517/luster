@@ -14,6 +14,8 @@ pub(crate) enum Command {
     List(ListCommand),
     /// Adds a new to-do
     Add(AddCommand),
+    /// Completes a to-do
+    Done(DoneCommand),
 }
 
 #[derive(Parser, Debug)]
@@ -48,4 +50,10 @@ pub(crate) struct AddCommand {
     pub(crate) description: Option<String>,
     #[arg(short = 'u', long, help = "The due date of the todo YYYY-MM-DD")]
     pub(crate) due_date: Option<String>,
+}
+
+#[derive(Parser, Debug)]
+pub(crate) struct DoneCommand {
+    #[arg(short, long, help = "The id of the todo")]
+    pub(crate) id: i32,
 }

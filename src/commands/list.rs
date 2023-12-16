@@ -4,7 +4,7 @@ use prettytable::{row, Table};
 use crate::args::ListCommand;
 use crate::commands::CommandExecutor;
 use crate::models::error::Error;
-use crate::models::todo::TodoItem;
+use crate::models::todo::TodoItemWithId;
 use crate::schema::todo_table::{completed, description, title};
 use crate::schema::todo_table::dsl::todo_table;
 use crate::utils::db_util;
@@ -21,7 +21,6 @@ impl ListCommandExecutor {
 
 impl CommandExecutor for ListCommandExecutor {
     fn execute(&self) -> Result<(), Error> {
-        let mut todo_vec: Vec<TodoItem> = Vec::new();
         let connection = &mut db_util::establish_connection();
         let mut select_statement = todo_table.into_boxed::<diesel::sqlite::Sqlite>();
         if !self.list_args.all {
@@ -40,7 +39,7 @@ impl CommandExecutor for ListCommandExecutor {
                         "%{}%", self.list_args.description.as_ref().unwrap())),
             );
         }
-        todo_vec = select_statement
+        let todo_vec: Vec<TodoItemWithId> = select_statement
             .limit(self.list_args.size)
             .offset((self.list_args.page - 1) * self.list_args.size)
             .load(connection)
@@ -51,7 +50,7 @@ impl CommandExecutor for ListCommandExecutor {
 }
 
 impl ListCommandExecutor {
-    fn print_table(todo_vec: Vec<TodoItem>) {
+    fn print_table(todo_vec: Vec<TodoItemWithId>) {
         let mut table = Table::new();
         table.add_row(row![
             "ID",
@@ -63,7 +62,7 @@ impl ListCommandExecutor {
         ]);
         for todo_item in todo_vec {
             table.add_row(row![
-                todo_item.id.unwrap_or(0),
+                todo_item.id,
                 todo_item.title,
                 todo_item.description.unwrap_or("NULL".to_string()),
                 match todo_item.due_date {

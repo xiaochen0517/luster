@@ -2,7 +2,7 @@
 
 diesel::table! {
     todo_table (id) {
-        id -> Nullable<Integer>,
+        id -> Integer,
         title -> Text,
         description -> Nullable<Text>,
         due_date -> Nullable<Date>,

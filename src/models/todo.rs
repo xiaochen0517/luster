@@ -3,11 +3,23 @@ use diesel::prelude::*;
 
 use crate::models::error::Error;
 
-#[derive(Debug, Queryable, Selectable, Insertable)]
+#[derive(Debug, Insertable)]
 #[diesel(table_name = crate::schema::todo_table)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub(crate) struct TodoItem {
     pub(crate) id: Option<i32>,
+    pub(crate) title: String,
+    pub(crate) description: Option<String>,
+    pub(crate) due_date: Option<NaiveDate>,
+    pub(crate) completed: bool,
+    pub(crate) create_time: NaiveDateTime,
+}
+
+#[derive(Debug, Queryable, Selectable, Insertable, AsChangeset)]
+#[diesel(table_name = crate::schema::todo_table)]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
+pub(crate) struct TodoItemWithId {
+    pub(crate) id: i32,
     pub(crate) title: String,
     pub(crate) description: Option<String>,
     pub(crate) due_date: Option<NaiveDate>,
