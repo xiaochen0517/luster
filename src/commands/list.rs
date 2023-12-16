@@ -6,6 +6,7 @@ use crate::commands::CommandExecutor;
 use crate::models::error::Error;
 use crate::models::todo::TodoItemWithId;
 use crate::schema::todo_table::{completed, description, title};
+use crate::models::todo::TodoItem;
 use crate::schema::todo_table::dsl::todo_table;
 use crate::utils::db_util;
 
@@ -27,17 +28,16 @@ impl CommandExecutor for ListCommandExecutor {
             select_statement = select_statement.filter(completed.eq(false));
         }
         if self.list_args.title.is_some() && !self.list_args.title.as_ref().unwrap().is_empty() {
-            select_statement = select_statement.filter(
-                title.like(format!("%{}%", self.list_args.title.as_ref().unwrap())),
-            );
+            select_statement = select_statement
+                .filter(title.like(format!("%{}%", self.list_args.title.as_ref().unwrap())));
         }
         if self.list_args.description.is_some()
             && !self.list_args.description.as_ref().unwrap().is_empty()
         {
-            select_statement = select_statement.filter(
-                description.like(format!(
-                        "%{}%", self.list_args.description.as_ref().unwrap())),
-            );
+            select_statement = select_statement.filter(description.like(format!(
+                "%{}%",
+                self.list_args.description.as_ref().unwrap()
+            )));
         }
         let todo_vec: Vec<TodoItemWithId> = select_statement
             .limit(self.list_args.size)
